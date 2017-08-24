@@ -80,11 +80,12 @@ public class AutoSelectUtils {
     }
 
     public static boolean checkPermission(Context context) {
-        Activity currentActivity = ((MyApplication)context.getApplicationContext()).getCurrentActivity();
+        Activity currentActivity = ((MyApplication) context.getApplicationContext()).getCurrentActivity();
         Integer permissionCode = ContextCompat.checkSelfPermission(currentActivity, Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
         Log.e("Code", Integer.toString(permissionCode));
         return permissionCode == PackageManager.PERMISSION_GRANTED;
     }
+
     public static boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

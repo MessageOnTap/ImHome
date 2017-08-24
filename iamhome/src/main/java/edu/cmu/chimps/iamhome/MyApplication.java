@@ -31,10 +31,11 @@ public class MyApplication extends Application {
         mContext = getApplicationContext();
     }
 
-    public Activity getCurrentActivity(){
+    public Activity getCurrentActivity() {
         return mCurrentActivity;
     }
-    public void setCurrentActivity(Activity mCurrentActivity){
+
+    public void setCurrentActivity(Activity mCurrentActivity) {
         this.mCurrentActivity = mCurrentActivity;
     }
 

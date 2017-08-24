@@ -27,7 +27,7 @@ public class ContactStorage {
     public static final String STORAGE = "save_contacts_file";
     public static final String ALLSELECTSTORAGE = "save_contacts_file";
 
-    public static void storeSendUsers(Context context, Set<String>set, String filename){
+    public static void storeSendUsers(Context context, Set<String> set, String filename) {
         SharedPreferences.Editor editor = context.getSharedPreferences(filename, context.MODE_PRIVATE).edit();
         editor.putStringSet(POSITION, set);
         editor.apply();
@@ -36,7 +36,7 @@ public class ContactStorage {
         }
     }
 
-    public static Set<String> getContacts(Context context, String filename){
+    public static Set<String> getContacts(Context context, String filename) {
         SharedPreferences pref = context.getSharedPreferences(filename, context.MODE_PRIVATE);
         return pref.getStringSet(POSITION, new HashSet<String>());
     }

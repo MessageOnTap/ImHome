@@ -90,7 +90,7 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
             protected void onInput(Item input) {
 
                 if (WifiUtils.getUsersHomeWifiList(MyApplication.getContext()).contains(input.getValueByField(WifiAp.BSSID)) &&
-                        input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_CONNECTED) ) {
+                        input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_CONNECTED)) {
                     TextView textView = (TextView) findViewById(R.id.textView3);
                     textView.setText("Connected WIFI: " + "\n" + input.getValueByField(WifiAp.SSID));
                     ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -203,7 +203,7 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
                         @Override
 
                         public void onMenuExpanded() {
-                            if(FirstTimeStorage.getFirst(MyApplication.getContext())){
+                            if (FirstTimeStorage.getFirst(MyApplication.getContext())) {
                                 Timer timer = new Timer();
                                 timer.schedule(new TimerTask() {
                                     @Override
@@ -418,11 +418,11 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void clearReferences(){
+    private void clearReferences() {
         Activity currActivity = mAPP.getCurrentActivity();
         if (this.equals(currActivity))
             mAPP.setCurrentActivity(null);
     }
 
-   }
+}
 

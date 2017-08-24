@@ -56,14 +56,14 @@ public class TimeStorage {
     }
 
     public static ArrayList<Integer> toList(Integer hour, Integer minute, Integer second) {
-        ArrayList<Integer> outputTimeList = new  ArrayList<Integer>();
+        ArrayList<Integer> outputTimeList = new ArrayList<Integer>();
         outputTimeList.add(hour);
         outputTimeList.add(minute);
         outputTimeList.add(second);
         return outputTimeList;
     }
 
-    public boolean hasTimeData (String identifier) {
+    public boolean hasTimeData(String identifier) {
         return false;
     }
 }

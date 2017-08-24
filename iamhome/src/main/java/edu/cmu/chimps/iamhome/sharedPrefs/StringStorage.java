@@ -28,7 +28,7 @@ public class StringStorage {
     public static void storeMessage(Context context, String inputText, Boolean mute) {
         SharedPreferences.Editor editor = context.getSharedPreferences("message", Context.MODE_PRIVATE).edit();
         if (inputText.replaceAll(" ", "").equals("")) {
-            if(!mute) {
+            if (!mute) {
                 Toast.makeText(context, "Message has been reset to default", Toast.LENGTH_SHORT).show();
             }
             editor.putString(POSITION, APP_DEFAULT_MESSAGE);
@@ -36,7 +36,7 @@ public class StringStorage {
         } else {
             editor.putString(POSITION, inputText);
             editor.apply();
-            if(!mute) {
+            if (!mute) {
                 Toast.makeText(context, "Successfully save", Toast.LENGTH_SHORT).show();
             }
         }

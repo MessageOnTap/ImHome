@@ -32,12 +32,12 @@ public class AlarmUtils {
     public static AlarmManager alarmManager;
     public static PendingIntent pendingIntent;
 
-    public static void cancelAlarm(){
+    public static void cancelAlarm() {
         alarmManager.cancel(pendingIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void setAlarm(Context context,int hour, int minute, int second) {
+    public static void setAlarm(Context context, int hour, int minute, int second) {
         Calendar calendar = Calendar.getInstance();
         Calendar right_now = Calendar.getInstance();
         calendar.set(Calendar.HOUR, hour);

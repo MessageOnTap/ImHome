@@ -29,27 +29,29 @@ import edu.cmu.chimps.iamhome.services.NotificationTriggerService;
 
 public class StatusToastsUtils {
 
-    public static void atHomeToast(Context context){
+    public static void atHomeToast(Context context) {
         CharSequence text = "You are at home";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-    public static void leaveHomeToast(Context context){
+
+    public static void leaveHomeToast(Context context) {
         CharSequence text = "You have left home";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
 
-    public static void wifiConnectedToast(Context context){
+    public static void wifiConnectedToast(Context context) {
         CharSequence text = "Wifi Connected";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-    public static void wifiDisconnectedToast(Context context){
+
+    public static void wifiDisconnectedToast(Context context) {
         CharSequence text = "Wifi Disconnected";
         int duration = Toast.LENGTH_SHORT;
 
@@ -57,7 +59,7 @@ public class StatusToastsUtils {
         toast.show();
     }
 
-    public static void saveHomeToast(Context context){
+    public static void saveHomeToast(Context context) {
         CharSequence text = "save home success";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
@@ -66,11 +68,12 @@ public class StatusToastsUtils {
 
     /**
      * send message noti
+     *
      * @param context
      */
-    public static void createAthomeNoti(Context context){
+    public static void createAthomeNoti(Context context) {
         //setting yes action
-        Intent sendMessageServiceIntent= new Intent(context, NotificationTriggerService.class);
+        Intent sendMessageServiceIntent = new Intent(context, NotificationTriggerService.class);
         sendMessageServiceIntent.setAction(NotificationTriggerService.ACTION_SEND);
         PendingIntent yesPendingIntent = PendingIntent
                 .getService(context.getApplicationContext(), 0, sendMessageServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT);

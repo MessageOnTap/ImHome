@@ -74,15 +74,15 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
     }
 
     public void setHomeEventListener(OnHomeEventListener homeEventListener) {
-        this.homeEventListener=homeEventListener;
+        this.homeEventListener = homeEventListener;
     }
+
     public void homeSensing() {
-        setHomeEventListener(new OnHomeEventListener(){
-            public void onEvent(boolean arrivesHome){
-                if(arrivesHome){
+        setHomeEventListener(new OnHomeEventListener() {
+            public void onEvent(boolean arrivesHome) {
+                if (arrivesHome) {
                     Log.e("TAG", "ARRIVES HOME");
-                }
-                else{
+                } else {
                     Log.e("TAG", "LEFT HOME");
 
                 }
@@ -93,9 +93,9 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
                 .forEach(new Callback<Item>() {
                     @Override
                     protected void onInput(Item input) {
-                        if((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_CONNECTED))){
+                        if ((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_CONNECTED))) {
                             Set<String> temp = WifiUtils.getUsersHomeWifiList(MyApplication.getContext());
-                            if(temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))){
+                            if (temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))) {
                                 result = true;
                                 homeEventListener.onEvent(true);
                                 StatusToastsUtils.atHomeToast(MyApplication.getContext());
@@ -103,18 +103,17 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
 
                             }
                             StatusToastsUtils.wifiConnectedToast(MyApplication.getContext());
-                        }
-                        else if((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_DISCONNECTED))){
+                        } else if ((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_DISCONNECTED))) {
                             Set<String> temp = WifiUtils.getUsersHomeWifiList(MyApplication.getContext());
-                            if(temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))){
+                            if (temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))) {
                                 homeEventListener.onEvent(false);
                                 StatusToastsUtils.leaveHomeToast(MyApplication.getContext());
                                 result = false;
                             }
                             StatusToastsUtils.wifiDisconnectedToast(MyApplication.getContext());
                         }
-            }
-        });
+                    }
+                });
 
     }
 
@@ -130,9 +129,9 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mUQI = new UQI(this);
-        Log.e("service","stshbuob" );
+        Log.e("service", "stshbuob");
         //set the alarm
-        AlarmUtils.setAlarm(this,ALARM_HOUR, ALARM_MINUTE, ALARM_SECOND);
+        AlarmUtils.setAlarm(this, ALARM_HOUR, ALARM_MINUTE, ALARM_SECOND);
         homeSensing();
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("Session On Start"));
@@ -150,7 +149,7 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
         return new PluginData();
     }
 
-    public boolean isAtHome(){
+    public boolean isAtHome() {
         return result;
     }
 

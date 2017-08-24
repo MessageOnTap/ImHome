@@ -217,20 +217,23 @@ public class SelectContactActivity extends AppCompatActivity {
         // AlarmUtils.setAlarm(this, 14,20,00);
         startService(new Intent(this, IAmHomePlugin.class));
     }
+
     protected void onResume() {
         super.onResume();
         mAPP.setCurrentActivity(this);
     }
+
     protected void onPause() {
         clearReferences();
         super.onPause();
     }
+
     protected void onDestroy() {
         clearReferences();
         super.onDestroy();
     }
 
-    private void clearReferences(){
+    private void clearReferences() {
         Activity currActivity = mAPP.getCurrentActivity();
         if (this.equals(currActivity))
             mAPP.setCurrentActivity(null);

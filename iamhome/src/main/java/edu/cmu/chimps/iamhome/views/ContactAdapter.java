@@ -44,7 +44,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     private List<Contact> mContactList;
     protected Toolbar mToolbar;
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         View contactView;
         ImageView contactImage;
         TextView contactName;
@@ -75,14 +75,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                if (SelectedItemCount()==contactList.size()){
+                if (SelectedItemCount() == contactList.size()) {
                     SelectContactActivity.iconChangeListener.onChange(false);
                 }
                 Contact contact = mContactList.get(position);
                 toggleFlag(contact);
                 String title = " " + SelectedItemCount() + " selected";
                 mToolbar.setSubtitle(title);
-                if (SelectedItemCount()== contactList.size()){
+                if (SelectedItemCount() == contactList.size()) {
                     Log.e("Test", "Listener sent");
                     SelectContactActivity.iconChangeListener.onChange(true);
                 }
@@ -109,17 +109,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     }
 
 
-    public  static void SetSelection(ViewHolder holder, Contact contact){
-        if (contact.isFlag()){
+    public static void SetSelection(ViewHolder holder, Contact contact) {
+        if (contact.isFlag()) {
             holder.contactLayout.setSelected(true);
             holder.contactCheckBox.setChecked(true);
-        }else {
+        } else {
             holder.contactLayout.setSelected(false);
             holder.contactCheckBox.setChecked(false);
         }
     }
 
-    public static void SetAllSelection(Boolean selection, RecyclerView recyclerView){
+    public static void SetAllSelection(Boolean selection, RecyclerView recyclerView) {
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
             Contact.SetAllFlag(selection);
@@ -128,8 +128,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             Log.i("iiii", "SetAllSelection: ");
         }
     }
-    
-    public static void SetAllSavedSelection(RecyclerView recyclerView){
+
+    public static void SetAllSavedSelection(RecyclerView recyclerView) {
         Set<String> set = ContactStorage.getContacts(MyApplication.getContext(), ContactStorage.ALLSELECTSTORAGE);
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
@@ -137,15 +137,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.contactCheckBox.setChecked(false);
         }
         Log.i("iiii", "SetAllSavedSelection: enter");
-        if (set.size() == 0){
-            SetAllSelection(false,recyclerView);
-        } else{
-            for (String str: set) {
+        if (set.size() == 0) {
+            SetAllSelection(false, recyclerView);
+        } else {
+            for (String str : set) {
                 Log.i("iiii", "SetAllSavedSelection:111 ");
                 for (int i = 0; i < recyclerView.getChildCount(); i++) {
                     ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                    Log.i("iiii", "SetAllSavedSelection: "+holder.contactName.getText());
-                    if (str.equals(holder.contactName.getText())){
+                    Log.i("iiii", "SetAllSavedSelection: " + holder.contactName.getText());
+                    if (str.equals(holder.contactName.getText())) {
                         holder.contactLayout.setSelected(true);
                         holder.contactCheckBox.setChecked(true);
                     }
