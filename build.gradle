@@ -1,37 +1,66 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.android.application'
 
-buildscript {
-    repositories {
-        jcenter()
+android {
+    compileSdkVersion 25
+    buildToolsVersion "26.0.1"
+    targetCompatibility = '1.7'
+    sourceCompatibility = '1.7'
+    defaultConfig {
+        applicationId "edu.cmu.chimps.iamhome"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+    lintOptions{
+        disable 'RestrictedApi'
+    }
+
 }
 
-allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://jitpack.io'
-        }
-        maven {
-            url 'http://dl.bintray.com/amulyakhare/maven'
-        }
-        maven {
-            url "https://jfrog.yiad.am/artifactory/MessageOnTap-release"
-            credentials {
-                username = "${yiadam_jfrog_username}"
-                password = "${yiadam_jfrog_password}"
-            }
-        }
-        maven { url "https://jitpack.io" }
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+    })
+    compile 'messageontap:api:0.3.2'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.github.chentc:PrivacyStreams:v0.1.4.7'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    compile 'com.github.imangazalievm:circlemenu:1.0.3'
+    compile 'com.github.wooplr:Spotlight:1.2.3'
+    compile 'com.github.takusemba:spotlight:1.0.3'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    maven {
+        url "https://maven.google.com"
     }
 }
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
