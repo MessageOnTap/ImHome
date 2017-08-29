@@ -1,12 +1,9 @@
 /*
   Copyright 2017 CHIMPS Lab, Carnegie Mellon University
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,16 +38,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import edu.cmu.chimps.iamhome.listeners.IconChangeListener;
-import edu.cmu.chimps.iamhome.sharedPrefs.ContactStorage;
-import edu.cmu.chimps.iamhome.sharedPrefs.FirstTimeStorage;
+import edu.cmu.chimps.iamhome.sharedprefs.ContactStorage;
+import edu.cmu.chimps.iamhome.sharedprefs.FirstTimeStorage;
 import edu.cmu.chimps.iamhome.views.Contact;
 import edu.cmu.chimps.iamhome.views.ContactAdapter;
 
 
 public class SelectContactActivity extends AppCompatActivity {
     protected MyApplication mAPP;
-    private int BackPressedCount;
-    Toast updatableToast;
+    private int mBackPressedCount;
+    private Toast updatableToast;
     public static IconChangeListener iconChangeListener;
 
     public static void setIconChangeListener(IconChangeListener icl) {
@@ -60,14 +57,14 @@ public class SelectContactActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (BackPressedCount == 0) {
+        if (mBackPressedCount == 0) {
             if (updatableToast != null) {
                 updatableToast.cancel();
             }
             updatableToast = Toast.makeText(SelectContactActivity.this, "Click again to cancel the change", Toast.LENGTH_SHORT);
             updatableToast.show();
-            BackPressedCount++;
-        } else if (BackPressedCount == 1) {
+            mBackPressedCount++;
+        } else if (mBackPressedCount == 1) {
             if (updatableToast != null) {
                 updatableToast.cancel();
             }
@@ -76,7 +73,7 @@ public class SelectContactActivity extends AppCompatActivity {
             super.onBackPressed();
         } else {
             Set<String> set = new HashSet<>(Contact.getSavedContactList());
-            ContactStorage.storeSendUsers(SelectContactActivity.this, set, ContactStorage.STORAGE);
+            ContactStorage.storeSendUsers(SelectContactActivity.this, set, ContactStorage.KEY_STORAGE);
             if (updatableToast != null) {
                 updatableToast.cancel();
             }
@@ -87,8 +84,8 @@ public class SelectContactActivity extends AppCompatActivity {
 
     }
 
-    Toolbar toolbar;
-    RecyclerView recyclerView;
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -96,7 +93,7 @@ public class SelectContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mAPP = (MyApplication) this.getApplicationContext();
 
-        BackPressedCount = 0;
+        mBackPressedCount = 0;
 
 
         //initialize contactlist from whatsapp
@@ -105,7 +102,7 @@ public class SelectContactActivity extends AppCompatActivity {
         } catch (PSException e) {
             e.printStackTrace();
         }
-        Contact.InitFlag(this, ContactStorage.STORAGE);
+        Contact.initFlag(this, ContactStorage.KEY_STORAGE);
 
         //Initialize UI
         setContentView(R.layout.activity_contact_select);
@@ -117,7 +114,7 @@ public class SelectContactActivity extends AppCompatActivity {
         //toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setTitle("Select Contacts");
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorwhite));
-        toolbar.setSubtitle(" " + Contact.SelectedItemCount() + " selected");
+        toolbar.setSubtitle(" " + Contact.selectedItemCount() + " selected");
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.colorwhite));
         toolbar.inflateMenu(R.menu.selectall);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -147,7 +144,7 @@ public class SelectContactActivity extends AppCompatActivity {
                 int menuItemId = item.getItemId();
                 switch (menuItemId) {
                     case R.id.selectAll:
-                        if (Contact.SelectedItemCount() == Contact.contactList.size()) {
+                        if (Contact.selectedItemCount() == Contact.contactList.size()) {
                             item.setIcon(getDrawable(R.drawable.ic_action_selectall));
                             ContactAdapter.SetAllSelection(false, recyclerView);
                             Snackbar snackbar = Snackbar
@@ -156,7 +153,7 @@ public class SelectContactActivity extends AppCompatActivity {
                         } else {
                             item.setIcon(getDrawable(R.drawable.ic_delete_sweep_black_24dp));
                             Set<String> set = new HashSet<>(Contact.getSavedContactList());
-                            ContactStorage.storeSendUsers(getBaseContext(), set, ContactStorage.ALLSELECTSTORAGE);
+                            ContactStorage.storeSendUsers(getBaseContext(), set, ContactStorage.KEY_ALL_SELECT_STORAGE);
                             ContactAdapter.SetAllSelection(true, recyclerView);
                             final MenuItem itemP = item;
                             Snackbar undoSnackbar = Snackbar
@@ -165,15 +162,16 @@ public class SelectContactActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View view) {
                                             itemP.setIcon(getDrawable(R.drawable.ic_action_selectall));
-                                            Contact.InitFlag(SelectContactActivity.this, ContactStorage.ALLSELECTSTORAGE);
+                                            Contact.initFlag(SelectContactActivity.this, ContactStorage.KEY_ALL_SELECT_STORAGE);
                                             ContactAdapter.SetAllSavedSelection(recyclerView);
-                                            toolbar.setSubtitle(" " + Contact.SelectedItemCount() + " selected");
+                                            toolbar.setSubtitle(" " + Contact.selectedItemCount() + " selected");
                                         }
                                     });
 
                             undoSnackbar.show();
                         }
-                        toolbar.setSubtitle(" " + Contact.SelectedItemCount() + " selected");
+                        toolbar.setSubtitle(" " + Contact.selectedItemCount() + " selected");
+                        break;
                         //Toast.makeText(getBaseContext(), "Select All" , Toast.LENGTH_SHORT).show();
                 }
                 return true;
@@ -193,7 +191,7 @@ public class SelectContactActivity extends AppCompatActivity {
             floatingUndefinedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    BackPressedCount = 2;
+                    mBackPressedCount = 2;
                     onBackPressed();
                     Intent startSessionIntent = new Intent("Session On Start");
                     LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(startSessionIntent);
@@ -205,7 +203,7 @@ public class SelectContactActivity extends AppCompatActivity {
             floatingUndefinedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    BackPressedCount = 2;
+                    mBackPressedCount = 2;
                     onBackPressed();
                 }
             });
@@ -217,23 +215,20 @@ public class SelectContactActivity extends AppCompatActivity {
         // AlarmUtils.setAlarm(this, 14,20,00);
         startService(new Intent(this, IAmHomePlugin.class));
     }
-
     protected void onResume() {
         super.onResume();
         mAPP.setCurrentActivity(this);
     }
-
     protected void onPause() {
         clearReferences();
         super.onPause();
     }
-
     protected void onDestroy() {
         clearReferences();
         super.onDestroy();
     }
 
-    private void clearReferences() {
+    private void clearReferences(){
         Activity currActivity = mAPP.getCurrentActivity();
         if (this.equals(currActivity))
             mAPP.setCurrentActivity(null);

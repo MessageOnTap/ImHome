@@ -1,12 +1,9 @@
 /*
   Copyright 2017 CHIMPS Lab, Carnegie Mellon University
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +23,7 @@ import android.support.v4.app.NotificationCompat;
 
 import edu.cmu.chimps.iamhome.services.SaveHomeWifiService;
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver{
     private static final int NOTIFICATION_ID = 1;
     private static final String YES_TITLE = "Yes";
     private static final String NO_TITLE = "No";
@@ -35,19 +32,18 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //trigger notification
 
-        createNotification(context);
+         createNotification(context);
     }
 
-    public static int getNotificationId() {
+    public static int getNotificationId(){
         return NOTIFICATION_ID;
     }
 
     /**
      * at home noti
-     *
      * @param context
      */
-    public void createNotification(Context context) {
+    public void createNotification(Context context){
         //setting yes action
         Intent saveHomeWifiServiceIntent = new Intent(context, SaveHomeWifiService.class);
         saveHomeWifiServiceIntent.setAction(SaveHomeWifiService.ACTION_SAVE);

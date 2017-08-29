@@ -1,12 +1,9 @@
 /*
   Copyright 2017 CHIMPS Lab, Carnegie Mellon University
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,23 +30,27 @@ import java.util.Set;
 import edu.cmu.chimps.iamhome.MyApplication;
 import edu.cmu.chimps.iamhome.R;
 import edu.cmu.chimps.iamhome.SelectContactActivity;
-import edu.cmu.chimps.iamhome.sharedPrefs.ContactStorage;
+import edu.cmu.chimps.iamhome.sharedprefs.ContactStorage;
 
-import static edu.cmu.chimps.iamhome.views.Contact.SelectedItemCount;
+
 import static edu.cmu.chimps.iamhome.views.Contact.contactList;
+import static edu.cmu.chimps.iamhome.views.Contact.selectedItemCount;
 import static edu.cmu.chimps.iamhome.views.Contact.toggleFlag;
 
+/**
+ * Created by knight006 on 7/18/2017.
+ */
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
     private List<Contact> mContactList;
     protected Toolbar mToolbar;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        View contactView;
-        ImageView contactImage;
-        TextView contactName;
-        LinearLayout contactLayout;
-        CheckBox contactCheckBox;
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        private View contactView;
+        private ImageView contactImage;
+        private TextView contactName;
+        private LinearLayout contactLayout;
+        private CheckBox contactCheckBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -75,14 +76,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                if (SelectedItemCount() == contactList.size()) {
+                if (selectedItemCount()==contactList.size()){
                     SelectContactActivity.iconChangeListener.onChange(false);
                 }
                 Contact contact = mContactList.get(position);
                 toggleFlag(contact);
-                String title = " " + SelectedItemCount() + " selected";
+                String title = " " + selectedItemCount() + " selected";
                 mToolbar.setSubtitle(title);
-                if (SelectedItemCount() == contactList.size()) {
+                if (selectedItemCount()== contactList.size()){
                     Log.e("Test", "Listener sent");
                     SelectContactActivity.iconChangeListener.onChange(true);
                 }
@@ -109,43 +110,43 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     }
 
 
-    public static void SetSelection(ViewHolder holder, Contact contact) {
-        if (contact.isFlag()) {
+    public  static void SetSelection(ViewHolder holder, Contact contact){
+        if (contact.isFlag()){
             holder.contactLayout.setSelected(true);
             holder.contactCheckBox.setChecked(true);
-        } else {
+        }else {
             holder.contactLayout.setSelected(false);
             holder.contactCheckBox.setChecked(false);
         }
     }
 
-    public static void SetAllSelection(Boolean selection, RecyclerView recyclerView) {
+    public static void SetAllSelection(Boolean selection, RecyclerView recyclerView){
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-            Contact.SetAllFlag(selection);
+            Contact.setAllFlag(selection);
             holder.contactLayout.setSelected(selection);
             holder.contactCheckBox.setChecked(selection);
             Log.i("iiii", "SetAllSelection: ");
         }
     }
-
-    public static void SetAllSavedSelection(RecyclerView recyclerView) {
-        Set<String> set = ContactStorage.getContacts(MyApplication.getContext(), ContactStorage.ALLSELECTSTORAGE);
+    
+    public static void SetAllSavedSelection(RecyclerView recyclerView){
+        Set<String> set = ContactStorage.getContacts(MyApplication.getContext(), ContactStorage.KEY_ALL_SELECT_STORAGE);
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
             ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
             holder.contactLayout.setSelected(false);
             holder.contactCheckBox.setChecked(false);
         }
         Log.i("iiii", "SetAllSavedSelection: enter");
-        if (set.size() == 0) {
-            SetAllSelection(false, recyclerView);
-        } else {
-            for (String str : set) {
+        if (set.size() == 0){
+            SetAllSelection(false,recyclerView);
+        } else{
+            for (String str: set) {
                 Log.i("iiii", "SetAllSavedSelection:111 ");
                 for (int i = 0; i < recyclerView.getChildCount(); i++) {
                     ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-                    Log.i("iiii", "SetAllSavedSelection: " + holder.contactName.getText());
-                    if (str.equals(holder.contactName.getText())) {
+                    Log.i("iiii", "SetAllSavedSelection: "+holder.contactName.getText());
+                    if (str.equals(holder.contactName.getText())){
                         holder.contactLayout.setSelected(true);
                         holder.contactCheckBox.setChecked(true);
                     }

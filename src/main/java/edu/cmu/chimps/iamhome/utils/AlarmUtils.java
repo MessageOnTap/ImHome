@@ -1,12 +1,9 @@
 /*
   Copyright 2017 CHIMPS Lab, Carnegie Mellon University
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,14 +29,14 @@ public class AlarmUtils {
     public static AlarmManager alarmManager;
     public static PendingIntent pendingIntent;
 
-    public static void cancelAlarm() {
+    public static void cancelAlarm(){
         alarmManager.cancel(pendingIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void setAlarm(Context context, int hour, int minute, int second) {
+    public static void setAlarm(Context context,int hour, int minute, int second) {
         Calendar calendar = Calendar.getInstance();
-        Calendar right_now = Calendar.getInstance();
+        Calendar rightNow = Calendar.getInstance();
         calendar.set(Calendar.HOUR, hour);
         int timeOffset = hour - calendar.get(Calendar.HOUR);
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -55,7 +52,7 @@ public class AlarmUtils {
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         Log.i("setting", String.valueOf(calendar.getTime()));
-        Log.i("actual", String.valueOf(right_now.getTime()));
+        Log.i("actual", String.valueOf(rightNow.getTime()));
     }
 
 }

@@ -1,12 +1,9 @@
 /*
   Copyright 2017 CHIMPS Lab, Carnegie Mellon University
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,15 +26,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import edu.cmu.chimps.iamhome.sharedPrefs.ContactStorage;
+import edu.cmu.chimps.iamhome.sharedprefs.ContactStorage;
 
+/**
+ * Created by knight006 on 7/18/2017.
+ */
 
 public class Contact {
     private String Name;
     private boolean isFlag;
-    public static ArrayList<Contact> contactList = new ArrayList<>();
+    public static ArrayList<Contact> contactList =  new ArrayList<>();
 
-    public Contact(String Name) {
+    public Contact(String Name){
         this.Name = Name;
     }
 
@@ -45,11 +45,11 @@ public class Contact {
         return Name;
     }
 
-    public boolean isFlag() {
+    public boolean isFlag(){
         return isFlag;
     }
 
-    public void setFlag(boolean flag) {
+    public void setFlag(boolean flag){
         isFlag = flag;
     }
 
@@ -57,9 +57,9 @@ public class Contact {
 
         UQI uqi = new UQI(context);
         ArrayList<Contact> result = new ArrayList<>();
-        List<Item> whatsAppC = uqi.getData(com.github.privacystreams.communication.Contact.getWhatAppAll(), Purpose.UTILITY("get whatsapp contacts"))
+       List<Item> whatsAppC= uqi.getData(com.github.privacystreams.communication.Contact.getWhatAppAll(), Purpose.UTILITY("get whatsapp contacts"))
                 .asList();
-        for (int i = 0; i < whatsAppC.size(); i++) {
+        for(int i = 0; i < whatsAppC.size();i++){
             Contact contact = new Contact(whatsAppC.get(i).getValueByField(com.github.privacystreams.communication.Contact.NAME)
                     .toString());
             result.add(i, contact);
@@ -68,57 +68,56 @@ public class Contact {
         return result;
     }
 
-    public char getFirstC() {
+    public char getFirstC(){
         return this.Name.charAt(0);
     }
-
-    public TextDrawable getContactPicture() {
+    public TextDrawable getContactPicture(){
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(String.valueOf(getFirstC()), Color.GRAY);
         return drawable;
     }
 
-    public static int SelectedItemCount() {
+    public static int selectedItemCount(){
         int count = 0;
-        for (int i = 0; i < contactList.size(); i++) {
-            if (contactList.get(i).isFlag()) {
+        for (int i=0; i<contactList.size(); i++){
+            if (contactList.get(i).isFlag()){
                 count++;
             }
         }
         return count;
     }
 
-    public static void SetAllFlag(Boolean flag) {
+    public  static void setAllFlag(Boolean flag){
         for (int i = 0; i < contactList.size(); i++) {
             contactList.get(i).setFlag(flag);
         }
     }
 
-    public static void toggleFlag(Contact contact) {
-        if (contact.isFlag()) {
+    public static void toggleFlag(Contact contact){
+        if (contact.isFlag()){
             contact.setFlag(false);
         } else {
             contact.setFlag(true);
         }
     }
 
-    public static ArrayList<String> getSavedContactList() {
+    public static ArrayList<String> getSavedContactList(){
         ArrayList<String> savedContactList = new ArrayList<>();
-        for (int i = 0; i < Contact.contactList.size(); i++) {
-            if (Contact.contactList.get(i).isFlag()) {
+        for (int i = 0; i < Contact.contactList.size(); i++){
+            if (Contact.contactList.get(i).isFlag()){
                 savedContactList.add(Contact.contactList.get(i).getName());
             }
         }
         return savedContactList;
     }
 
-    public static void InitFlag(Context context, String filename) {
+    public static void initFlag(Context context, String filename){
         Set<String> set = ContactStorage.getContacts(context, filename);
-        SetAllFlag(false);
-        if (set.size() != 0) {
-            for (String str : set) {
-                for (Contact contact : Contact.contactList) {
-                    if (str.equals(contact.getName())) {
+        setAllFlag(false);
+        if (set.size() != 0){
+            for (String str: set){
+                for (Contact contact: Contact.contactList){
+                    if (str.equals(contact.getName())){
                         contact.setFlag(true);
                         //Toast.makeText(context, "selecte completed", Toast.LENGTH_SHORT).show();
                     }

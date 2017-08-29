@@ -1,12 +1,9 @@
 /*
   Copyright 2017 CHIMPS Lab, Carnegie Mellon University
-
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,8 +32,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import edu.cmu.chimps.iamhome.listeners.OnHomeEventListener;
-import edu.cmu.chimps.iamhome.sharedPrefs.ContactStorage;
-import edu.cmu.chimps.iamhome.sharedPrefs.StringStorage;
+import edu.cmu.chimps.iamhome.sharedprefs.ContactStorage;
+import edu.cmu.chimps.iamhome.sharedprefs.StringStorage;
 import edu.cmu.chimps.iamhome.utils.AlarmUtils;
 import edu.cmu.chimps.iamhome.utils.StatusToastsUtils;
 import edu.cmu.chimps.iamhome.utils.WifiUtils;
@@ -46,8 +43,8 @@ import edu.cmu.chimps.messageontap_api.PluginData;
 import edu.cmu.chimps.messageontap_api.ServiceAttributes;
 
 public class IAmHomePlugin extends MessageOnTapPlugin {
-    UQI mUQI;
-    Long tid;
+    private UQI mUQI;
+    private Long tid;
 
     private final static int ALARM_HOUR = 8;
     private final static int ALARM_MINUTE = 29;
@@ -59,7 +56,7 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
 
     @Override
     protected void initNewSession(long l, HashMap<String, Object> hashMap) throws Exception {
-        hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_REFERENCE_LIST, ContactStorage.getContacts(MyApplication.getContext(), ContactStorage.STORAGE).toArray());
+        hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_REFERENCE_LIST, ContactStorage.getContacts(MyApplication.getContext(), ContactStorage.KEY_STORAGE).toArray());
         hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_MESSAGE, StringStorage.getMessage(MyApplication.getContext()));
         hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_APP, "whatsapp");
         hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_TOAST, true);
@@ -74,15 +71,15 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
     }
 
     public void setHomeEventListener(OnHomeEventListener homeEventListener) {
-        this.homeEventListener = homeEventListener;
+        this.homeEventListener=homeEventListener;
     }
-
     public void homeSensing() {
-        setHomeEventListener(new OnHomeEventListener() {
-            public void onEvent(boolean arrivesHome) {
-                if (arrivesHome) {
+        setHomeEventListener(new OnHomeEventListener(){
+            public void onEvent(boolean arrivesHome){
+                if(arrivesHome){
                     Log.e("TAG", "ARRIVES HOME");
-                } else {
+                }
+                else{
                     Log.e("TAG", "LEFT HOME");
 
                 }
@@ -93,27 +90,26 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
                 .forEach(new Callback<Item>() {
                     @Override
                     protected void onInput(Item input) {
-                        if ((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_CONNECTED))) {
+                        if((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_CONNECTED))){
                             Set<String> temp = WifiUtils.getUsersHomeWifiList(MyApplication.getContext());
-                            if (temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))) {
+                            if(temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))){
                                 result = true;
                                 homeEventListener.onEvent(true);
                                 StatusToastsUtils.atHomeToast(MyApplication.getContext());
-
-
                             }
                             StatusToastsUtils.wifiConnectedToast(MyApplication.getContext());
-                        } else if ((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_DISCONNECTED))) {
+                        }
+                        else if((input.getValueByField(WifiAp.STATUS).toString().equals(WifiAp.STATUS_DISCONNECTED))){
                             Set<String> temp = WifiUtils.getUsersHomeWifiList(MyApplication.getContext());
-                            if (temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))) {
+                            if(temp != null && temp.contains(input.getValueByField(WifiAp.BSSID))){
                                 homeEventListener.onEvent(false);
                                 StatusToastsUtils.leaveHomeToast(MyApplication.getContext());
                                 result = false;
                             }
                             StatusToastsUtils.wifiDisconnectedToast(MyApplication.getContext());
                         }
-                    }
-                });
+            }
+        });
 
     }
 
@@ -129,9 +125,9 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mUQI = new UQI(this);
-        Log.e("service", "stshbuob");
+        Log.e("service","stshbuob" );
         //set the alarm
-        AlarmUtils.setAlarm(this, ALARM_HOUR, ALARM_MINUTE, ALARM_SECOND);
+        AlarmUtils.setAlarm(this,ALARM_HOUR, ALARM_MINUTE, ALARM_SECOND);
         homeSensing();
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("Session On Start"));
@@ -149,7 +145,7 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
         return new PluginData();
     }
 
-    public boolean isAtHome() {
+    public boolean isAtHome(){
         return result;
     }
 
