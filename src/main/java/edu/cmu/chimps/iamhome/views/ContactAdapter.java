@@ -37,9 +37,6 @@ import static edu.cmu.chimps.iamhome.views.Contact.contactList;
 import static edu.cmu.chimps.iamhome.views.Contact.selectedItemCount;
 import static edu.cmu.chimps.iamhome.views.Contact.toggleFlag;
 
-/**
- * Created by knight006 on 7/18/2017.
- */
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
     private List<Contact> mContactList;
@@ -138,7 +135,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.contactCheckBox.setChecked(false);
         }
         Log.i("iiii", "SetAllSavedSelection: enter");
-        if (set.size() == 0){
+        if (set.isEmpty()){
             SetAllSelection(false,recyclerView);
         } else{
             for (String str: set) {

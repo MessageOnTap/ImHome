@@ -123,9 +123,8 @@ public class WifiUtils {
 
     public static String getWifiName(Context context) throws PSException {
         UQI uqi = new UQI(context);
-        String name  = uqi.getData(WifiAp.getScanResults(),Purpose.UTILITY("get wifi name")
+        return uqi.getData(WifiAp.getScanResults(),Purpose.UTILITY("get wifi name")
                 ).filter(WifiAp.STATUS, WifiAp.STATUS_CONNECTED).getFirst().getField(WifiAp.SSID).toString();
-        return name;
     }
     public void isAtHome(Context context){
         UQI uqi = new UQI(context);

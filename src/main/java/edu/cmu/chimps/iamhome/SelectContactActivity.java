@@ -92,11 +92,8 @@ public class SelectContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAPP = (MyApplication) this.getApplicationContext();
-
         mBackPressedCount = 0;
 
-
-        //initialize contactlist from whatsapp
         try {
             Contact.contactList = Contact.getWhatsAppContacts(this);
         } catch (PSException e) {
@@ -179,14 +176,13 @@ public class SelectContactActivity extends AppCompatActivity {
         });
 
         ContactAdapter adapter = new ContactAdapter(Contact.contactList, toolbar);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton floatingUndefinedButton = (FloatingActionButton) findViewById(R.id.floatingUndefinedAction);
+        FloatingActionButton floatingUndefinedButton = findViewById(R.id.floatingUndefinedAction);
         if (FirstTimeStorage.getIndicator(MyApplication.getContext())) {
-            //Toast.makeText(MyApplication.getContext(), "Send Botton", Toast.LENGTH_SHORT).show();
             floatingUndefinedButton.setImageResource(R.drawable.ic_action_send);
             floatingUndefinedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,7 +194,6 @@ public class SelectContactActivity extends AppCompatActivity {
                 }
             });
         } else {
-            //Toast.makeText(MyApplication.getContext(), "Save Botton", Toast.LENGTH_SHORT).show();
             floatingUndefinedButton.setImageResource(R.drawable.ic_action_check);
             floatingUndefinedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -211,8 +206,6 @@ public class SelectContactActivity extends AppCompatActivity {
 
         FirstTimeStorage.setContactActivityIndicatorSend(MyApplication.getContext(), false);
 
-        //set the alarm
-        // AlarmUtils.setAlarm(this, 14,20,00);
         startService(new Intent(this, IAmHomePlugin.class));
     }
     protected void onResume() {

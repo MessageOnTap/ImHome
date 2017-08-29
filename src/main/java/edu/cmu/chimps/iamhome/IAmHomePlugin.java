@@ -32,15 +32,17 @@ import java.util.HashMap;
 import java.util.Set;
 
 import edu.cmu.chimps.iamhome.listeners.OnHomeEventListener;
-import edu.cmu.chimps.iamhome.sharedprefs.ContactStorage;
-import edu.cmu.chimps.iamhome.sharedprefs.StringStorage;
 import edu.cmu.chimps.iamhome.utils.AlarmUtils;
 import edu.cmu.chimps.iamhome.utils.StatusToastsUtils;
 import edu.cmu.chimps.iamhome.utils.WifiUtils;
 import edu.cmu.chimps.messageontap_api.MessageOnTapPlugin;
 import edu.cmu.chimps.messageontap_api.MethodConstants;
-import edu.cmu.chimps.messageontap_api.PluginData;
+import edu.cmu.chimps.messageontap_api.SemanticTemplate;
 import edu.cmu.chimps.messageontap_api.ServiceAttributes;
+
+import static edu.cmu.chimps.iamhome.sharedprefs.ContactStorage.KEY_STORAGE;
+import static edu.cmu.chimps.iamhome.sharedprefs.ContactStorage.getContacts;
+import static edu.cmu.chimps.iamhome.sharedprefs.StringStorage.getMessage;
 
 public class IAmHomePlugin extends MessageOnTapPlugin {
     private UQI mUQI;
@@ -55,9 +57,14 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
     private OnHomeEventListener homeEventListener;
 
     @Override
+    protected Set<SemanticTemplate> semanticTemplates() {
+        return null;
+    }
+
+    @Override
     protected void initNewSession(long l, HashMap<String, Object> hashMap) throws Exception {
-        hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_REFERENCE_LIST, ContactStorage.getContacts(MyApplication.getContext(), ContactStorage.KEY_STORAGE).toArray());
-        hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_MESSAGE, StringStorage.getMessage(MyApplication.getContext()));
+        hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_REFERENCE_LIST, getContacts(MyApplication.getContext(), KEY_STORAGE).toArray());
+        hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_MESSAGE, getMessage(MyApplication.getContext()));
         hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_APP, "whatsapp");
         hashMap.put(ServiceAttributes.Action.SHARE_EXTRA_TOAST, true);
         tid = createTask(l, MethodConstants.ACTION_TYPE, MethodConstants.ACTION_METHOD_AUTO_SHARE, hashMap);
@@ -138,11 +145,6 @@ public class IAmHomePlugin extends MessageOnTapPlugin {
     public void onDestroy() {
         mUQI.stopAll();
         super.onDestroy();
-    }
-
-    @Override
-    protected PluginData iPluginData() {
-        return new PluginData();
     }
 
     public boolean isAtHome(){

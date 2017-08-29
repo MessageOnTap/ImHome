@@ -110,7 +110,7 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
         });
 
         //Callback when the view is ready
-        /**
+        /*
          * tutorial steps, and the first time overview of using this application
          */
         final LinearLayout welcomePage = (LinearLayout) findViewById(R.id.welcome_page);
@@ -122,7 +122,7 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
                 //Detect whether it's first time
                 if (FirstTimeStorage.getFirst(MyApplication.getContext())) {
                     welcomePage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    /**
+                    /*
                      * overview
                      */
 
@@ -195,7 +195,7 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
                             .start();
                     //
 
-                    final CircleMenu circleMenu = (CircleMenu) findViewById(R.id.circleMenu);
+                    final CircleMenu circleMenu = findViewById(R.id.circleMenu);
                     circleMenu.setStateUpdateListener(new CircleMenu.OnStateUpdateListener() {
                         @Override
 
@@ -305,7 +305,7 @@ public class IAmHomeSettingsActivity extends AppCompatActivity {
         circleMenu.setOnItemClickListener(new CircleMenu.OnItemClickListener() {
             @Override
             public void onItemClick(CircleMenuButton menuButton) {
-                /**
+                /*
                  * Four buttons for actions;
                  */
 
